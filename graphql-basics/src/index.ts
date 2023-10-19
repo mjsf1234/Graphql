@@ -1,4 +1,5 @@
-import { GraphQLServer } from "graphql-yoga";
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
 
 //demo user data
 const users = [
@@ -83,11 +84,13 @@ const resolvers = {
   },
 };
 
-const server = new GraphQLServer({
+const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
-server.start(() => {
-  console.log(`the server is running `);
+const { url } = await startStandaloneServer(server, {
+  listen: { port: 4001 },
 });
+
+console.log(`🚀  Server ready at: ${url}`);
